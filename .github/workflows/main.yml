@@ -1,0 +1,30 @@
+name: Bot Pembuat Video Otomatis
+
+on:
+  schedule:
+    # Ini artinya: Jalankan setiap 6 jam sekali
+    - cron: '0 */6 * * *' 
+  workflow_dispatch: # Supaya bisa dijalankan manual juga
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Ambil Kode dari Repository
+      uses: actions/checkout@v3
+
+    - name: Instal Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Instal ImageMagick & Library
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y imagemagick
+        pip install moviepy gTTS
+
+    - name: Jalankan Bot Pembuat Video
+      run: python main.py
+      
